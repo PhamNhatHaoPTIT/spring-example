@@ -35,17 +35,23 @@ public class BeanScopeTest {
 
     @Test
     public void beanPrototypeTest() {
+        // GIVE test context (use only for test environment)
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+        // WHEN get 2 bean from context
         BeanPrototype bean1 = (BeanPrototype) applicationContext.getBean("beanPrototype");
         BeanPrototype bean2 = (BeanPrototype) applicationContext.getBean("beanPrototype");
+        // THEN compare them
         assertThat(bean1, not(sameInstance(bean2)));
     }
 
     @Test
     public void beanSingletonTest() {
+        // GIVE
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+        // WHEN
         BeanSingleton bean1 = (BeanSingleton) applicationContext.getBean("beanSingleton");
         BeanSingleton bean2 = (BeanSingleton) applicationContext.getBean("beanSingleton");
+        // THEN
         assertThat(bean1, (sameInstance(bean2)));
     }
 
