@@ -35,13 +35,11 @@ public class TransactionTest {
         while (resultSet.next()) {
             Student student = new Student();
             student.setId(resultSet.getInt(1));
-            student.setLastName(resultSet.getString(2));
-            student.setFirstName(resultSet.getString(3));
             student.setPoint(resultSet.getFloat(4));
             studentList.add(student);
         }
         // WHEN add 2 point bonus for each student in list
-        String updateSalarySql = "UPDATE Students SET Point=Point+2 WHERE ID=?;";
+        String updateSalarySql = "UPDATE Students SET point=point+2 WHERE ID=?;";
         PreparedStatement pstmt2 = connection.prepareStatement(updateSalarySql);
         boolean check = false;
         try {

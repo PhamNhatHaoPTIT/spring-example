@@ -49,6 +49,7 @@ public class SpeedTest {
         return time;
     }
     long execTime1, execTime2;
+
     @Before
     public void setUp() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
