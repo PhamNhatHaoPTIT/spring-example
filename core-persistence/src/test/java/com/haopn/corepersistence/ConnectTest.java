@@ -5,18 +5,25 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import org.hamcrest.Matchers;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.junit4.SpringRunner;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class ConnectTest {
+
+    @Autowired
+    private ApplicationContext context;
 
     private Connection connection;
 
     @Before
-    public void setUp() throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?noAccessToProcedureBodies=true",
-                                            "root", "root1234");
+    public void setUp() {
+        connection = (Connection) context.getBean("getConnection");
     }
 
     @Test
@@ -27,8 +34,7 @@ public class ConnectTest {
         for(int i = 0; i < 5; i++) {
             try {
                 connection = null;
-                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?noAccessToProcedureBodies=true",
-                                                    "root", "root1234");
+                connection = (Connection) context.getBean("getConnection");
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -5,12 +5,25 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.hamcrest.Matchers;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class SpeedTest {
+
+    @Autowired
+    private ApplicationContext context;
+
+    @Autowired
     private Connection connection;
 
     private void doSomething() {
@@ -29,7 +42,7 @@ public class SpeedTest {
         doSomething();
         try {
             connection.close();
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?noAccessToProcedureBodies=true", "root", "root1234");
+            connection = (Connection) context.getBean("getConnection");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,8 +65,6 @@ public class SpeedTest {
 
     @Before
     public void setUp() throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?noAccessToProcedureBodies=true", "root", "root1234");
         execTime1 = doSomethingWithoutNewConnect();
         execTime2 = doSomethingWithNewConnect();
     }
