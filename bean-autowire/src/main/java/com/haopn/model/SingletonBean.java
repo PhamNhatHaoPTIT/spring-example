@@ -1,5 +1,6 @@
 package com.haopn.model;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -7,10 +8,10 @@ import org.springframework.stereotype.Component;
 public class SingletonBean {
 
     @Autowired
-    private PrototypeBean prototypeBean;
+    private ObjectFactory<PrototypeBean> prototypeBeanObjectFactory;
 
     public PrototypeBean getPrototypeBean() {
-        return prototypeBean;
+        return prototypeBeanObjectFactory.getObject();
     }
 
 }

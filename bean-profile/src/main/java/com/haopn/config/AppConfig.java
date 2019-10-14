@@ -4,7 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan("com.haopn.config")
+@ComponentScan("com.haopn.model")
 public class AppConfig {
 
 }

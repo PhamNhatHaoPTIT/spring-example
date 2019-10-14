@@ -1,4 +1,4 @@
-package com.haopn.config;
+package com.haopn.model;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,15 +6,17 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class AnyBean {
-    @Bean
+
+    @Bean(name = "devBean")
     @Profile("dev")
     public String devBean() {
         return "This is bean in dev";
     }
 
-    @Bean
+    @Bean(name = "testBean")
     @Profile("test")
-    public String devTest() {
+    public String testBean() {
         return "This is bean in test";
     }
+
 }
