@@ -29,7 +29,7 @@ public class SpeedTest {
         try {
             Statement stmt = connection.createStatement();
             String selectSql = "SELECT * FROM Students";
-            ResultSet resultSet = stmt.executeQuery(selectSql);
+            stmt.executeQuery(selectSql);
         } catch (Exception e) {
             e.printStackTrace();
         }
