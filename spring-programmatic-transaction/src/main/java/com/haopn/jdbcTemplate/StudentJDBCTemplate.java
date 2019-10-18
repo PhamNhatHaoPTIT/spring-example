@@ -34,19 +34,15 @@ public class StudentJDBCTemplate implements StudentDao {
         try {
             String SQL1 = "insert into Student (name, age) values (?, ?)";
             jdbcTemplateObject.update( SQL1, name, age);
-
             // Get the latest student id to be used in Marks table
             String SQL2 = "select max(id) from Student";
             int sid = jdbcTemplateObject.queryForInt( SQL2 );
-
             String SQL3 = "insert into Marks(sid, marks, year) " + "values (?, ?, ?)";
             jdbcTemplateObject.update( SQL3, sid, marks, year);
 
-            System.out.println("Created Name = " + name + ", Age = " + age);
             transactionManager.commit(status);
         }
         catch (DataAccessException e) {
-            System.out.println("Error in creating record, rolling back");
             transactionManager.rollback(status);
             throw e;
         }
