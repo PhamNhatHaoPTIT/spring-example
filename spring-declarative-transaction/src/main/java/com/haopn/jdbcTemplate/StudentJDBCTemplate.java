@@ -1,22 +1,33 @@
 package com.haopn.jdbcTemplate;
 
+import com.haopn.config.AppConfig;
 import com.haopn.dao.StudentDao;
 import com.haopn.model.StudentMarks;
 import com.haopn.model.StudentMarksMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
 
+@Service
+@ComponentScan(basePackageClasses = AppConfig.class)
 public class StudentJDBCTemplate implements StudentDao {
 
+    @Autowired
     private JdbcTemplate jdbcTemplateObject;
 
-    public void setDataSource(DataSource ds) {
-        jdbcTemplateObject = new JdbcTemplate(ds);
-    }
+// only use for xml config, now disable to use annotation config
+//    public void setDataSource(DataSource ds) {
+//        jdbcTemplateObject = new JdbcTemplate(ds);
+//    }
 
+
+    @Transactional
     public boolean create(String name, Integer age, Integer marks, Integer year) {
         boolean status = false;
         try {
