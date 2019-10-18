@@ -8,6 +8,5 @@ public class Main {
         Student student = (Student) context.getBean("student");
         student.getName();
         student.getAge();
-        student.printThrowException();
     }
 }

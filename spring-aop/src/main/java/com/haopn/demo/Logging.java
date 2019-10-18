@@ -10,7 +10,7 @@ public class Logging {
      *  all the methods available. So advice will be called
      *  for all the methods.
      */
-    @Pointcut("execution(* com.haopn.*.*(..))")
+    @Pointcut("execution(* com.haopn.demo.*.*(..))")
     private void selectAll(){}
 
     /**
