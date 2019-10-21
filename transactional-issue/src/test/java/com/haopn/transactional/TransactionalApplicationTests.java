@@ -25,24 +25,27 @@ class TransactionalApplicationTests {
         Assert.assertTrue(bookList != null && bookList.size() != 0);
     }
 
+    // test rollback while runtime exception in method
     @Test
     public void insertBook() {
+        // GIVEN
         Book book = new Book();
         book.setName("DEMO2");
         book.setPrice(70000);
         int rowNum = 0;
+        // WHEN try to call method always throw exception
         try {
             rowNum = bookService.save(book);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        // THEN transaction will rollback
         Assert.assertTrue(rowNum == 0);
     }
 
     @Test
     public void deleteBook() {
-        int rowCount = bookService.deleteById(100);
+        int rowCount = bookService.deleteById(2);
         Assert.assertTrue(rowCount == 0);
     }
 
@@ -52,14 +55,5 @@ class TransactionalApplicationTests {
         Assert.assertTrue(optional.isPresent());
     }
 
-    @Test
-    public void testIdBookNotValid() {
-        // GIVEN: assume we have total 3 books in db
-
-        // WHEN: run for i = 0 -> 10 and delete book have id % 2 == 0
-        int rowCount = bookService.deleteBookWithEvenId();
-        // THEN: transaction will rollback
-        Assert.assertTrue(rowCount == 2);
-    }
 
 }

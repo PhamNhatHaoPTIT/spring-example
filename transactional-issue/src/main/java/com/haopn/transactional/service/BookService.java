@@ -13,4 +13,6 @@ public interface BookService {
     int deleteBookWithEvenId();
     List<Book> findAll();
     Optional<Book> findById(Integer id);
+    int testRequired(Book book) throws Exception;
+    int testRequiresNew(Book book);
 }

@@ -6,6 +6,10 @@
 
 + Self-invocation in @Transactional
 
++ Demo transaction propagation: required, requiresNew
+
++ Demo transaction isolation level
+
 + Demo case: Redundant @Transactional such as below (assume we are using Spring JPA)
 
     ```java

@@ -4,6 +4,7 @@ import com.haopn.transactional.model.Book;
 import com.haopn.transactional.repository.JdbcBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     JdbcBookRepository jdbcBookRepository;
+    @Autowired
+    InnerBean innerBean;
 
     @Override
     public int count() {
@@ -74,5 +77,32 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<Book> findById(Integer id) {
         return jdbcBookRepository.findById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public int testRequired(Book book) throws Exception {
+        int rowCount = 0;
+        rowCount = jdbcBookRepository.save(book);
+        try {
+            innerBean.testRequired();
+        } catch (Exception e) {
+            rowCount = 0;
+            throw new Exception(e);
+        }
+        return rowCount;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public int testRequiresNew(Book book) {
+        int rowCount = 0;
+        rowCount = jdbcBookRepository.save(book);
+        try {
+            innerBean.testRequiresNew();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowCount;
     }
 }
