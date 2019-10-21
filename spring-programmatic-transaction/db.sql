@@ -14,3 +14,9 @@ CREATE TABLE Marks(
    MARKS  INT NOT NULL,
    YEAR   INT NOT NULL
 );
+
+CREATE TABLE books (
+	id int auto_increment primary key,
+    name nvarchar(255),
+    price float
+);

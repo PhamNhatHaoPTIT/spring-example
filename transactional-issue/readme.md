@@ -6,7 +6,7 @@
 
 + Self-invocation in @Transactional
 
-+ Demo case: Redundant @Transactional such as below
++ Demo case: Redundant @Transactional such as below (assume we are using Spring JPA)
 
     ```java
         @Transactional
