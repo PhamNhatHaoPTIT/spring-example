@@ -22,21 +22,18 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int save(Book book) {
+    public int save(Book book) throws Exception {
         jdbcBookRepository.save(book);
         // checked exception, will rollback while rollbackFor = ...
-        // but still not working
-        
-//        try {
-//            String demo = null;
-//            System.out.println(demo.length());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
+        String demo = null; // assume demo is null value
+        if(demo == null) {
+            throw new Exception();
+        } else {
+            System.out.println(demo.length());
+        }
         // unchecked exception -> auto rollback -> crash app
-        String demo = null;
-        System.out.println(demo.length());
+//        String demo = null;
+//        System.out.println(demo.length());
         return 1;
     }
 

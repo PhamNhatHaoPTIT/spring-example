@@ -26,12 +26,18 @@ class TransactionalApplicationTests {
     }
 
     @Test
-    public void insertBook() throws Exception {
+    public void insertBook() {
         Book book = new Book();
-        book.setName("DEMO1");
+        book.setName("DEMO2");
         book.setPrice(70000);
-        int rowNum = bookService.save(book);
-        Assert.assertTrue(rowNum == 1);
+        int rowNum = 0;
+        try {
+            rowNum = bookService.save(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertTrue(rowNum == 0);
     }
 
     @Test
