@@ -1,5 +1,6 @@
 package com.haopn.test;
 
+import com.haopn.config.AppConfig;
 import com.haopn.jdbcTemplate.StudentJDBCTemplate;
 import org.junit.Assert;
 import org.junit.Test;

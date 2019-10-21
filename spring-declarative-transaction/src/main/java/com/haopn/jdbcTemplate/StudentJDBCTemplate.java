@@ -6,15 +6,17 @@ import com.haopn.model.StudentMarks;
 import com.haopn.model.StudentMarksMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
 
-@Service
+@Configuration
 @ComponentScan(basePackageClasses = AppConfig.class)
 public class StudentJDBCTemplate implements StudentDao {
 
