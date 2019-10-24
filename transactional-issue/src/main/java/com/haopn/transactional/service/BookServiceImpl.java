@@ -4,6 +4,7 @@ import com.haopn.transactional.model.Book;
 import com.haopn.transactional.repository.JdbcBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,24 +25,24 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public int save(Book book) throws Exception {
-        jdbcBookRepository.save(book);
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    public int save(Book book) {
+        int rowCount = jdbcBookRepository.save(book);
         // checked exception, will rollback while rollbackFor = ...
-        String demo = null; // assume demo is null value
-        if(demo == null) {
-            throw new Exception();
-        } else {
-            System.out.println(demo.length());
-        }
+//        String demo = null; // assume demo is null value
+//        if(demo == null) {
+//            throw new Exception();
+//        } else {
+//            System.out.println(demo.length());
+//        }
         // unchecked exception -> auto rollback -> crash app
 //        String demo = null;
 //        System.out.println(demo.length());
-        return 1;
+        return rowCount;
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int update(Book book) {
         return jdbcBookRepository.update(book);
     }
@@ -105,4 +106,41 @@ public class BookServiceImpl implements BookService {
         }
         return rowCount;
     }
+
+    // self-invocation transaction
+    @Autowired
+    BookService bookService;
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    public int testReadOnly() {
+        jdbcBookRepository.findAll();
+        Book book = new Book();
+        book.setId(5);
+        book.setName("Demo");
+        int rowCount = 0;
+        try {
+            rowCount = bookService.update(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowCount;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public int testIsolationLevel() {
+        jdbcBookRepository.findAll();
+        Book book = new Book();
+        book.setId(5);
+        book.setName("Demo");
+        int rowCount = 0;
+        try {
+            rowCount = bookService.save(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowCount;
+    }
+
 }

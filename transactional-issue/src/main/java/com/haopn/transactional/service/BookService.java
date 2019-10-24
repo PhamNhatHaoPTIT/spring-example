@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BookService {
     int count();
-    int save(Book book) throws Exception;
+    int save(Book book);
     int update(Book book);
     int deleteById(Integer id);
     int deleteBookWithEvenId();
@@ -15,4 +15,6 @@ public interface BookService {
     Optional<Book> findById(Integer id);
     int testRequired(Book book) throws Exception;
     int testRequiresNew(Book book);
+    int testReadOnly();
+    int testIsolationLevel();
 }
