@@ -11,14 +11,14 @@ import vn.com.vng.zalopay.promotion.onboarding.transaction.repository.PersonRepo
  */
 @Service
 @Transactional
-public class PersonServiceImpl implements PersonService {
+public class InnerRequiredServiceImpl implements InnerRequiredService {
 
     @Autowired
     private PersonRepository personRepository;
 
     @Override
-    public void createPerson(boolean raiseError) {
-        personRepository.createPerson(new Person(this.getClass().getSimpleName()));
+    public void save(boolean raiseError) {
+        personRepository.save(new Person(this.getClass().getSimpleName()));
 
         if (raiseError) {
             throw new RuntimeException("Error occurs");

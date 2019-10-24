@@ -12,6 +12,10 @@ import org.springframework.test.context.BootstrapWith;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import vn.com.vng.zalopay.promotion.onboarding.transaction.repository.PersonRepository;
+import vn.com.vng.zalopay.promotion.onboarding.transaction.service.InnerRequiredServiceImpl;
+import vn.com.vng.zalopay.promotion.onboarding.transaction.service.InnerRequiresNewServiceImpl;
+import vn.com.vng.zalopay.promotion.onboarding.transaction.service.OuterTransactionalService;
+import vn.com.vng.zalopay.promotion.onboarding.transaction.service.OuterTransactionalServiceImpl;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -35,7 +39,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 public class TransactionalTest {
 
     @Autowired
-    private TransactionalService transactionalService; // SUT
+    private OuterTransactionalService outerTransactionalService; // SUT
 
     @Autowired
     private PersonRepository personRepository;
@@ -46,15 +50,15 @@ public class TransactionalTest {
 
         // WHEN
         try {
-            transactionalService.executeRequiresNewInsideRequired();
+            outerTransactionalService.executeRequiresNewInsideRequired();
             fail("Exception must be thrown out");
         } catch (Exception e) {
             assertThat(e.getMessage(), is("Error occurs"));
         }
 
-        // THEN both person and another person insertion are rolled back
-        assertThat(personRepository.countByName("PersonServiceImpl"), is(0));
-        assertThat(personRepository.countByName("AnotherPersonServiceImpl"), is(0));
+        // THEN both transactions are rolled back
+        assertThat(personRepository.countByName(OuterTransactionalServiceImpl.class.getSimpleName()), is(0));
+        assertThat(personRepository.countByName(InnerRequiresNewServiceImpl.class.getSimpleName()), is(0));
     }
 
     @Test
@@ -63,15 +67,32 @@ public class TransactionalTest {
 
         // WHEN
         try {
-            transactionalService.executeMixedPropagation();
+            outerTransactionalService.executeMixedPropagation();
             fail("Exception must be thrown out");
         } catch (Exception e) {
             assertThat(e.getMessage(), is("Error occurs"));
         }
 
-        // THEN both person and another person insertion are rolled back
-        assertThat(personRepository.countByName("PersonServiceImpl"), is(0));
-        assertThat(personRepository.countByName("AnotherPersonServiceImpl"), is(0));
+        // THEN all transactions are rolled back
+        assertThat(personRepository.countByName(InnerRequiredServiceImpl.class.getSimpleName()), is(0));
+        assertThat(personRepository.countByName(InnerRequiresNewServiceImpl.class.getSimpleName()), is(0));
+    }
+
+    @Test
+    public void test3() {
+        // GIVEN mixed transaction propagation setup
+
+        // WHEN
+        try {
+            outerTransactionalService.executeSuccessInInnerTransaction();
+            fail("Exception must be thrown out");
+        } catch (Exception e) {
+            assertThat(e.getMessage(), is("Error occurs"));
+        }
+
+        // THEN "REQUIRES_NEW" transaction committed successfully
+        assertThat(personRepository.countByName(InnerRequiredServiceImpl.class.getSimpleName()), is(0));
+        assertThat(personRepository.countByName(InnerRequiresNewServiceImpl.class.getSimpleName()), is(1));
     }
 
 }

@@ -15,7 +15,7 @@ public class PersonRepositoryImpl implements PersonRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void createPerson(Person person) {
+    public void save(Person person) {
         jdbcTemplate.update("INSERT INTO PERSON (NAME) VALUES (?)",
                 person.getName());
     }
