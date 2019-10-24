@@ -10,6 +10,8 @@
 
 + Demo transaction isolation level
 
++ Demo read only case in @Transactional
+
 + Demo case: Redundant @Transactional such as below (assume we are using Spring JPA)
 
     ```java
