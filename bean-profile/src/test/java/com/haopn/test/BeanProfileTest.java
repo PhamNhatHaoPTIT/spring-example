@@ -20,6 +20,7 @@ public class BeanProfileTest {
 
     @Test
     public void isExistDevBean() {
+        Assert.assertTrue(devBean.equals("This is bean in dev"));
         Assert.assertNotNull(devBean);
     }
 
