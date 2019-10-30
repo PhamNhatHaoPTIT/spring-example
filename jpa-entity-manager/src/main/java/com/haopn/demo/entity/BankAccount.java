@@ -8,16 +8,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Bank_Account" )
 public class BankAccount {
+
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "Full_Name", length = 128, nullable = false)
+    @Column(name = "FULL_NAME", length = 128, nullable = false)
     private String fullName;
 
-    @Column(name = "Balance", nullable = false)
+    @Column(name = "BALANCE", nullable = false)
     private double balance;
+
+    public BankAccount() {
+
+    }
+
+    public BankAccount(String fullName, double balance) {
+        this.fullName = fullName;
+        this.balance = balance;
+    }
 
     public Integer getId() {
         return id;

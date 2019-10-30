@@ -28,7 +28,7 @@ public class BankAccountDaoImpl implements BankAccountDao {
     @Override
     public List<BankAccountInfo> listBankAccountInfo() {
         String sql = "Select new " + BankAccountInfo.class.getName()
-                + "(e.id,e.fullName,e.balance)"
+                + "(e.id, e.fullName, e.balance)"
                 + " from " + BankAccount.class.getName() + " e ";
         Query query = entityManager.createQuery(sql, BankAccountInfo.class);
         return query.getResultList();
