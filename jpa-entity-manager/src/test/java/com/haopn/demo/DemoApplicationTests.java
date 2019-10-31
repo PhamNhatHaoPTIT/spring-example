@@ -27,13 +27,14 @@ class DemoApplicationTests {
     @Autowired
     BankAccountService bankAccountService;
 
+
     void initAccount() {
         bankAccountService.insertAccount(new BankAccount("Tom", 1000));
         bankAccountService.insertAccount(new BankAccount("Jerry", 2000));
     }
 
     @Test
-    public void testFindAll() {
+    public void testTransferMoney() {
         // GIVEN: 2 account
         initAccount();
         // WHEN: transfer money, tom have 1000 but he try to send 1100 to jerry

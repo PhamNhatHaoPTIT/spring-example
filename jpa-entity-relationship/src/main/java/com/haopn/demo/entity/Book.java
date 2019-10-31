@@ -12,7 +12,7 @@ public class Book {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "book_category_id")
+    @JoinColumn(name = "book_category_id", referencedColumnName = "id")
     private BookCategory bookCategory;
 
     public Book() {

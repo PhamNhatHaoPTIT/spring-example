@@ -16,13 +16,9 @@ public class BankAccountDaoImpl implements BankAccountDao {
     @Autowired
     EntityManager entityManager;
 
-    public BankAccountDaoImpl() {
-
-    }
-
     @Override
     public BankAccount findById(Integer id) {
-        return this.entityManager.find(BankAccount.class, id);
+        return entityManager.find(BankAccount.class, id);
     }
 
     @Override

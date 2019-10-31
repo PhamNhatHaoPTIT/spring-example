@@ -3,6 +3,7 @@ package com.haopn.demo;
 import com.haopn.demo.entity.Book;
 import com.haopn.demo.entity.BookCategory;
 import com.haopn.demo.service.BookCategoryService;
+import com.haopn.demo.service.BookService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,8 @@ class DemoApplicationTests {
 
 	@Autowired
 	BookCategoryService bookCategoryService;
+	@Autowired
+	BookService bookService;
 
 	public List<Book> initListBook(BookCategory bookCategory) {
 		List<Book> books = new ArrayList<>();
@@ -38,16 +41,31 @@ class DemoApplicationTests {
 		Book book_2 = new Book();
 		book_2.setName("C tutorial");
 		book_2.setBookCategory(bookCategory);
+//		bookService.save(book_1);
+//		bookService.save(book_2);
+		books.add(book_1);
+		books.add(book_2);
 		return books;
 	}
 
 	@Test
 	public void testInsertNewBookCategory() {
-		BookCategory bookCategory = new BookCategory();
-		List<Book> books = initListBook(bookCategory);
-		bookCategory.setBooks(books);
+		BookCategory bookCategory = new BookCategory("IT");
+		bookCategory.setBooks(initListBook(bookCategory));
 		bookCategoryService.save(bookCategory);
+
 		List<BookCategory> list = bookCategoryService.findAll();
+		System.out.println("===========list book");
+		for(BookCategory x : list) {
+			System.out.println(x.getName());
+			System.out.println(x.getId());
+			List<Book> books1 = x.getBooks();
+			for(Book y : books1) {
+				System.out.println(y.getId());
+				System.out.println(y.getName());
+			}
+		}
+		System.out.println("===========list book");
 		Assert.assertTrue(list.size() != 0);
 	}
 
