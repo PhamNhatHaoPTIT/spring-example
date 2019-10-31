@@ -51,8 +51,8 @@ class DemoApplicationTests {
 		BookCategory bookCategory = new BookCategory("IT");
 		bookCategory.setBooks(initListBook(bookCategory));
 		bookCategoryService.save(bookCategory);
-		List<BookCategory> list = bookCategoryService.findAll();
-		Assert.assertTrue(list.size() != 0);
+
+		List<Book> books = bookCategoryService.getAllBookLabel("IT");
 	}
 
 }

@@ -2,7 +2,9 @@ package com.haopn.demo.dao;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import com.haopn.demo.entity.BankAccount;
@@ -13,8 +15,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BankAccountDaoImpl implements BankAccountDao {
 
+//    @Autowired
+//    EntityManager entityManager;
+
     @Autowired
-    EntityManager entityManager;
+    EntityManagerFactory entityManagerFactory;
+
+    private EntityManager entityManager;
+
+    @PostConstruct
+    public void init() {
+        this.entityManager = entityManagerFactory.createEntityManager();
+    }
 
     @Override
     public BankAccount findById(Integer id) {
@@ -32,7 +44,9 @@ public class BankAccountDaoImpl implements BankAccountDao {
 
     @Override
     public void insertAccount(BankAccount bankAccount) {
+        entityManager.getTransaction().begin();
         entityManager.persist(bankAccount);
+        entityManager.getTransaction().commit();
     }
 
 }

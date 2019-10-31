@@ -13,7 +13,7 @@ public class BookCategory {
 
     private String name;
 
-    @OneToMany(mappedBy = "bookCategory", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bookCategory", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Book> books;
 
     public BookCategory() {

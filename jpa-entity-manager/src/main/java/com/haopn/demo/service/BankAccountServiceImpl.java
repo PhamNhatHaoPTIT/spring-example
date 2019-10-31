@@ -50,7 +50,6 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    @Transactional
     public void insertAccount(BankAccount bankAccount) {
         bankAccountDao.insertAccount(bankAccount);
     }

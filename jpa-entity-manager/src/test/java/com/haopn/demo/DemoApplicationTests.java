@@ -3,7 +3,6 @@ package com.haopn.demo;
 import com.haopn.demo.entity.BankAccount;
 import com.haopn.demo.exception.BankTransactionException;
 import com.haopn.demo.service.BankAccountService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ class DemoApplicationTests {
     BankAccountService bankAccountService;
 
 
-    void initAccount() {
+    private void initAccount() {
         bankAccountService.insertAccount(new BankAccount("Tom", 1000));
         bankAccountService.insertAccount(new BankAccount("Jerry", 2000));
     }
