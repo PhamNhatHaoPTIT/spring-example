@@ -1,6 +1,7 @@
 package com.haopn.demo;
 
 import com.haopn.demo.entity.BankAccount;
+import com.haopn.demo.exception.BankTransactionException;
 import com.haopn.demo.service.BankAccountService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -34,19 +35,12 @@ class DemoApplicationTests {
     }
 
     @Test
-    public void testTransferMoney() {
+    public void testTransferMoney() throws BankTransactionException {
         // GIVEN: 2 account
         initAccount();
         // WHEN: transfer money, tom have 1000 but he try to send 1100 to jerry
-        boolean flag = false;
-        try {
-            bankAccountService.sendMoney(1, 2, 1100);
-            flag = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // THEN: transaction rollback
-        Assert.assertTrue(flag == false);
+        bankAccountService.sendMoney(1, 2, 1100);
+        // THEN: transaction will throw exception - BankTransactionException
     }
 
 }

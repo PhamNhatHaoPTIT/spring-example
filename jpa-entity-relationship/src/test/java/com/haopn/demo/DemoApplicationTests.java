@@ -41,8 +41,6 @@ class DemoApplicationTests {
 		Book book_2 = new Book();
 		book_2.setName("C tutorial");
 		book_2.setBookCategory(bookCategory);
-//		bookService.save(book_1);
-//		bookService.save(book_2);
 		books.add(book_1);
 		books.add(book_2);
 		return books;
@@ -53,19 +51,7 @@ class DemoApplicationTests {
 		BookCategory bookCategory = new BookCategory("IT");
 		bookCategory.setBooks(initListBook(bookCategory));
 		bookCategoryService.save(bookCategory);
-
 		List<BookCategory> list = bookCategoryService.findAll();
-		System.out.println("===========list book");
-		for(BookCategory x : list) {
-			System.out.println(x.getName());
-			System.out.println(x.getId());
-			List<Book> books1 = x.getBooks();
-			for(Book y : books1) {
-				System.out.println(y.getId());
-				System.out.println(y.getName());
-			}
-		}
-		System.out.println("===========list book");
 		Assert.assertTrue(list.size() != 0);
 	}
 
