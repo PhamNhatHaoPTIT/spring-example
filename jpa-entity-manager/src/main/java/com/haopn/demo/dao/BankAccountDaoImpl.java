@@ -15,9 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BankAccountDaoImpl implements BankAccountDao {
 
-//    @Autowired
-//    EntityManager entityManager;
-
     @Autowired
     EntityManagerFactory entityManagerFactory;
 

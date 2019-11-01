@@ -4,7 +4,6 @@ import com.haopn.demo.entity.Book;
 import com.haopn.demo.entity.BookCategory;
 import com.haopn.demo.service.BookCategoryService;
 import com.haopn.demo.service.BookService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

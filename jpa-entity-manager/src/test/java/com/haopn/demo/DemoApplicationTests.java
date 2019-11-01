@@ -27,7 +27,6 @@ class DemoApplicationTests {
     @Autowired
     BankAccountService bankAccountService;
 
-
     private void initAccount() {
         bankAccountService.insertAccount(new BankAccount("Tom", 1000));
         bankAccountService.insertAccount(new BankAccount("Jerry", 2000));
