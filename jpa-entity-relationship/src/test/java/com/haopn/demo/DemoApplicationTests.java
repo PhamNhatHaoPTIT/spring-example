@@ -2,6 +2,7 @@ package com.haopn.demo;
 
 import com.haopn.demo.entity.Book;
 import com.haopn.demo.entity.BookCategory;
+import com.haopn.demo.repository.BookRepository;
 import com.haopn.demo.service.BookCategoryService;
 import com.haopn.demo.service.BookService;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +37,15 @@ class DemoApplicationTests {
 	@Autowired
 	BookService bookService;
 
+	@PersistenceContext
+	EntityManager entityManager;
+
 	public List<Book> initListBook(BookCategory bookCategory) {
 		List<Book> books = new ArrayList<>();
 		Book book_1 = new Book();
 		book_1.setName("Java tutorial");
 		book_1.setBookCategory(bookCategory);
+
 		Book book_2 = new Book();
 		book_2.setName("C tutorial");
 		book_2.setBookCategory(bookCategory);
@@ -51,7 +60,8 @@ class DemoApplicationTests {
 		bookCategory.setBooks(initListBook(bookCategory));
 		bookCategoryService.save(bookCategory);
 
-		List<Book> books = bookCategoryService.getAllBookLabel("IT");
+		bookService.deleteBookById(1);
+		//bookCategoryService.getAllBookLabel("IT");
 	}
 
 }
