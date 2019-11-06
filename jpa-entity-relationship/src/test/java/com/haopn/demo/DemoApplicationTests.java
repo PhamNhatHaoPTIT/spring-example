@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureJdbc;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
@@ -66,6 +67,16 @@ class DemoApplicationTests {
 		initData();
 		BookCategory bookCategory = bookCategoryService.findBookCategoryByBooksId(2);
 		Assert.assertNotNull(bookCategory);
+	}
+
+	@Test
+	public void testSortBook() {
+		initData();
+		Sort sort = Sort.by("id").ascending();
+		List<Book> books = bookService.findAll(sort);
+		for(Book book : books) {
+			System.out.println(book.getName());
+		}
 	}
 
 }

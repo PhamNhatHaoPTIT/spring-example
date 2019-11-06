@@ -3,11 +3,13 @@ package com.haopn.demo.service;
 import com.haopn.demo.entity.Book;
 import com.haopn.demo.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -38,6 +40,11 @@ public class BookServiceImpl implements BookService {
             System.out.println("Found");
             System.out.println(book_2.getName());
         }
+    }
+
+    @Override
+    public List<Book> findAll(Sort sort) {
+        return bookRepository.findAll(sort);
     }
 
 
