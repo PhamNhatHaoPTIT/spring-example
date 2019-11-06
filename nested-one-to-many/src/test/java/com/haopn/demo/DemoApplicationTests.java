@@ -77,7 +77,7 @@ class DemoApplicationTests {
 		a.setName("A object");
 		a.setbList(init(a));
 		entityManager.persist(a);
-		
+
 		List<BagC> cList = entityManager.createQuery(
 				"select c " +
 						"from BagC c " +

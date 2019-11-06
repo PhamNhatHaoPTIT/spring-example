@@ -12,4 +12,6 @@ public interface BankAccountService {
     BankAccount findById(Integer id);
     List<BankAccountInfo> listBankAccountInfo();
     void insertAccount(BankAccount bankAccount);
+    void deleteAccount(int id);
+    void updateAccount(int id, double balance);
 }

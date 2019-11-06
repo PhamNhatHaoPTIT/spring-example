@@ -6,6 +6,10 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 
 import com.haopn.demo.entity.BankAccount;
 import com.haopn.demo.model.BankAccountInfo;
@@ -41,9 +45,33 @@ public class BankAccountDaoImpl implements BankAccountDao {
 
     @Override
     public void insertAccount(BankAccount bankAccount) {
-        entityManager.getTransaction().begin();
         entityManager.persist(bankAccount);
+    }
+
+    @Override
+    public void deleteAccount(int id) {
+        entityManager.getTransaction().begin();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        // create delete
+        CriteriaDelete<BankAccount> delete = criteriaBuilder.createCriteriaDelete(BankAccount.class);
+        // create root
+        Root root = delete.from(BankAccount.class);
+        // set where clause
+        delete.where(criteriaBuilder.equal(root.get("id"), id));
+        // action
+        entityManager.createQuery(delete).executeUpdate();
         entityManager.getTransaction().commit();
     }
+
+    @Override
+    public void updateAccount(int id, double balance) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<BankAccount> update = criteriaBuilder.createCriteriaUpdate(BankAccount.class);
+        Root root = update.from(BankAccount.class);
+        update.set("balance", balance);
+        update.where(criteriaBuilder.equal(root.get("id"), id));
+        entityManager.createQuery(update).executeUpdate();
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.haopn.demo;
 import com.haopn.demo.entity.BankAccount;
 import com.haopn.demo.exception.BankTransactionException;
 import com.haopn.demo.service.BankAccountService;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,21 @@ class DemoApplicationTests {
         // WHEN: transfer money, tom have 1000 but he try to send 1100 to jerry
         bankAccountService.sendMoney(1, 2, 1100);
         // THEN: transaction will throw exception - BankTransactionException
+    }
+
+    @Test
+    public void testDeleteUseCriteria() {
+        initAccount();
+        bankAccountService.deleteAccount(1);
+        Assert.assertTrue(bankAccountService.listBankAccountInfo().size() == 1);
+    }
+
+    @Test
+    public void testUpdateUseCriteria() {
+        initAccount();
+        bankAccountService.updateAccount(1, 2233);
+        BankAccount temp = bankAccountService.findById(1);
+        Assert.assertTrue(temp.getBalance() == 2233);
     }
 
 }
