@@ -41,10 +41,14 @@ public class BookCategoryServiceImpl implements BookCategoryService {
         BookCategory bookCategory = bookCategoryRepository.findBookCategoryByName(bookType);
         List<Book> books = bookCategory.getBooks();
         for(Book x : books) {
-            System.out.println("abc");
             System.out.println(x.getName());
         }
         return books;
+    }
+
+    @Override
+    public BookCategory findBookCategoryByBooksId(int id) {
+        return bookCategoryRepository.findBookCategoryByBooksId(id);
     }
 
 }

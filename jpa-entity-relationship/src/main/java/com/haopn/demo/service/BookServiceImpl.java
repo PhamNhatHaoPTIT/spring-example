@@ -28,17 +28,17 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleteBookById(int id) {
 
-        System.out.println("no query");
-        Book temp = entityManager.find(Book.class, 1);         // query db
-        if(temp != null) System.out.println("Found");
+        Book book_1 = entityManager.find(Book.class, 1);         // query db
+        if(book_1 != null) System.out.println("Found");
 
         bookRepository.deleteBookById(id);
 
-        System.out.println("no query abc");
-        Book temp2 = entityManager.find(Book.class, 1);       // not query
-        if(temp2 != null) {
+        Book book_2 = entityManager.find(Book.class, 1);       // not query
+        if(book_2 != null) {
             System.out.println("Found");
-            System.out.println(temp2.getName());
+            System.out.println(book_2.getName());
         }
     }
+
+
 }

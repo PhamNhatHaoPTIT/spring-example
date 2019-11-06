@@ -9,4 +9,5 @@ public interface BookCategoryService {
     void save(BookCategory bookCategory);
     List<BookCategory> findAll();
     List<Book> getAllBookLabel(String bookType);
+    BookCategory findBookCategoryByBooksId(int id);
 }
