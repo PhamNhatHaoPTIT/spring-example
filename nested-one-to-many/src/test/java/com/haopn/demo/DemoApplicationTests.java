@@ -5,6 +5,7 @@ import com.haopn.demo.bag.BagB;
 import com.haopn.demo.bag.BagC;
 import com.haopn.demo.entity.A;
 import com.haopn.demo.entity.B;
+import com.haopn.demo.entity.C;
 import com.haopn.demo.service.AService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -48,12 +49,21 @@ class DemoApplicationTests {
 		b2.setBagA(a);
 		BagB b3 = new BagB("B3 object");
 		b3.setBagA(a);
-		List<BagC> cList = new ArrayList<>();
+
+		List<BagC> cList_1 = new ArrayList<>();
 		BagC c1 = new BagC();
 		c1.setName("C1 object");
 		c1.setBagB(b1);
-		cList.add(c1);
-		b1.setcList(cList);
+		cList_1.add(c1);
+		b1.setcList(cList_1);
+
+		List<BagC> cList_2 = new ArrayList<>();
+		BagC c2 = new BagC();
+		c2.setName("C2 object");
+		c2.setBagB(b2);
+		cList_2.add(c2);
+		b2.setcList(cList_2);
+
 		bSet.add(b1);
 		bSet.add(b2);
 		bSet.add(b3);
@@ -67,6 +77,7 @@ class DemoApplicationTests {
 		a.setName("A object");
 		a.setbList(init(a));
 		entityManager.persist(a);
+		
 		List<BagC> cList = entityManager.createQuery(
 				"select c " +
 						"from BagC c " +
@@ -76,23 +87,7 @@ class DemoApplicationTests {
 				.setParameter("id", 1)
 				.getResultList();
 		System.out.println("=========== c value ==========");
-		for(BagC c : cList) {
-			System.out.println(c.getName());
-		}
-		//A temp = aService.findById(1);
-	}
-
-	@Test
-	public void testFetchJoin() {
-		List<BagC> cList = entityManager.createQuery(
-				"select c " +
-						"from BagC c " +
-						"inner join fetch c.bagB b " +
-						"inner join fetch b.bagA a " +
-						"where a.id = :id", BagC.class)
-				.setParameter("id", 1)
-				.getResultList();
-		for(BagC c : cList) {
+		for (BagC c : cList) {
 			System.out.println(c.getName());
 		}
 	}

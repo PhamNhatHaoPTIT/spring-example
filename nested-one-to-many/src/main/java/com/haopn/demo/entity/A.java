@@ -1,6 +1,7 @@
 package com.haopn.demo.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,7 +14,7 @@ public class A {
     private String name;
 
     @OneToMany(mappedBy = "a", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private Set<B> bSet;
+    private List<B> bList;
 
     public String getName() {
         return name;
@@ -23,11 +24,19 @@ public class A {
         this.name = name;
     }
 
-    public Set<B> getbSet() {
-        return bSet;
+    public int getId() {
+        return id;
     }
 
-    public void setbSet(Set<B> bSet) {
-        this.bSet = bSet;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<B> getbList() {
+        return bList;
+    }
+
+    public void setbList(List<B> bList) {
+        this.bList = bList;
     }
 }
