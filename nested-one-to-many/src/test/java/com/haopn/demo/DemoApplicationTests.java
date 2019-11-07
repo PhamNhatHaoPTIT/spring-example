@@ -7,6 +7,7 @@ import com.haopn.demo.entity.A;
 import com.haopn.demo.entity.B;
 import com.haopn.demo.entity.C;
 import com.haopn.demo.service.AService;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
@@ -41,7 +44,7 @@ class DemoApplicationTests {
 	@Autowired
 	EntityManager entityManager;
 
-	private List<BagB> init(BagA a) {
+	private List<BagB> getBList(BagA a) {
 		List<BagB> bSet = new ArrayList<>();
 		BagB b1 = new BagB("B1 object");
 		b1.setBagA(a);
@@ -69,15 +72,19 @@ class DemoApplicationTests {
 		bSet.add(b3);
 		return bSet;
 	}
-
-	@Test
-	@Transactional
-	public void testInsertSimple() {
+	
+	@Transactional(propagation = Propagation.MANDATORY)
+	public void initData() {
 		BagA a = new BagA();
 		a.setName("A object");
-		a.setbList(init(a));
+		a.setbList(getBList(a));
 		entityManager.persist(a);
+	}
 
+	@Test
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void testInsertSimple() {
+		initData();
 		List<BagC> cList = entityManager.createQuery(
 				"select c " +
 						"from BagC c " +
@@ -86,10 +93,7 @@ class DemoApplicationTests {
 						"where a.id = :id", BagC.class)
 				.setParameter("id", 1)
 				.getResultList();
-		System.out.println("=========== c value ==========");
-		for (BagC c : cList) {
-			System.out.println(c.getName());
-		}
+		Assert.assertTrue(cList.size() == 2);
 	}
 
 }

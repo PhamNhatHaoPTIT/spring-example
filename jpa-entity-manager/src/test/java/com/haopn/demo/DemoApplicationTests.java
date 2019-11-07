@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.PostConstruct;
+
 
 @RunWith(SpringRunner.class)
 @AutoConfigureJdbc
@@ -28,6 +30,7 @@ class DemoApplicationTests {
     @Autowired
     BankAccountService bankAccountService;
 
+    @PostConstruct
     private void initAccount() {
         bankAccountService.insertAccount(new BankAccount("Tom", 1000));
         bankAccountService.insertAccount(new BankAccount("Jerry", 2000));
@@ -36,7 +39,7 @@ class DemoApplicationTests {
     @Test
     public void testTransferMoney() throws BankTransactionException {
         // GIVEN: 2 account
-        initAccount();
+
         // WHEN: transfer money, tom have 1000 but he try to send 1100 to jerry
         bankAccountService.sendMoney(1, 2, 1100);
         // THEN: transaction will throw exception - BankTransactionException
@@ -44,14 +47,12 @@ class DemoApplicationTests {
 
     @Test
     public void testDeleteUseCriteria() {
-        initAccount();
         bankAccountService.deleteAccount(1);
         Assert.assertTrue(bankAccountService.listBankAccountInfo().size() == 1);
     }
 
     @Test
     public void testUpdateUseCriteria() {
-        initAccount();
         bankAccountService.updateAccount(1, 2233);
         BankAccount temp = bankAccountService.findById(1);
         System.out.println(temp.getBalance());
