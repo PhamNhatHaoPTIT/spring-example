@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 public class Employee {
@@ -14,15 +15,19 @@ public class Employee {
     private String name;
     private String dept;
     private int salary;
+    private LocalDate birthday;
+    private LocalDate createAt;
 
     public Employee() {
 
     }
 
-    public Employee(String name, String dept, int salary) {
+    public Employee(String name, String dept, int salary, LocalDate birthday, LocalDate createAt) {
         this.name = name;
         this.dept = dept;
         this.salary = salary;
+        this.birthday = birthday;
+        this.createAt = createAt;
     }
 
     public Long getId() {
@@ -55,5 +60,21 @@ public class Employee {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public LocalDate getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDate createAt) {
+        this.createAt = createAt;
     }
 }

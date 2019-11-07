@@ -72,7 +72,7 @@ class DemoApplicationTests {
 		bSet.add(b3);
 		return bSet;
 	}
-	
+
 	@Transactional(propagation = Propagation.MANDATORY)
 	public void initData() {
 		BagA a = new BagA();
