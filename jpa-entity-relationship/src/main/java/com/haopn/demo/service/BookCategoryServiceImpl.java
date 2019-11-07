@@ -56,5 +56,10 @@ public class BookCategoryServiceImpl implements BookCategoryService {
         return bookCategoryRepository.countDistinctBookCategoryByBooksIdLessThan(id);
     }
 
+    @Override
+    public BookCategory findByBooks_Id(int id) {
+        return bookCategoryRepository.findByBooks_Id(id);
+    }
+
 }
 

@@ -84,4 +84,10 @@ class DemoApplicationTests {
 		Assert.assertTrue(count == 1);
 	}
 
+	@Test
+	public void testFindBookCategoryWith_Convention() {
+		BookCategory bookCategory = bookCategoryService.findByBooks_Id(1);
+		Assert.assertNotNull(bookCategory);
+	}
+
 }

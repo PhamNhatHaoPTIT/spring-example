@@ -11,4 +11,5 @@ public interface BookCategoryService {
     List<Book> getAllBookLabel(String bookType);
     BookCategory findBookCategoryByBooksId(int id);
     int countDistinctBookCategoryByBooksIdLessThan(int id);
+    BookCategory findByBooks_Id(int id);
 }

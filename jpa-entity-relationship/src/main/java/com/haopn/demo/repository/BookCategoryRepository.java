@@ -10,4 +10,6 @@ public interface BookCategoryRepository extends JpaRepository<BookCategory, Inte
 
     int countDistinctBookCategoryByBooksIdLessThan(int id);
 
+    BookCategory findByBooks_Id(int id);
+
 }
