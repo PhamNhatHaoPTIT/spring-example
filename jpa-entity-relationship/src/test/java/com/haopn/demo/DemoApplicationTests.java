@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureJdbc;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +35,7 @@ class DemoApplicationTests {
 	@Autowired
 	BookService bookService;
 
+	@PostConstruct
 	public void initData() {
 		BookCategory bookCategory = new BookCategory("IT");
 		List<Book> books = new ArrayList<>();
@@ -54,26 +55,22 @@ class DemoApplicationTests {
 
 	@Test
 	public void testQualifyingAnnotation() {
-		initData();
 		bookService.deleteBookById(1);
 	}
 
 	@Test
 	public void testLoadLazyList() {
-		initData();
 		bookCategoryService.getAllBookLabel("IT");
 	}
 
 	@Test
 	public void testNestedPropertyFind() {
-		initData();
 		BookCategory bookCategory = bookCategoryService.findBookCategoryByBooksId(2);
 		Assert.assertNotNull(bookCategory);
 	}
 
 	@Test
 	public void testSortBook() {
-		initData();
 		Sort sort = Sort.by("id").ascending();
 		List<Book> books = bookService.findAll(sort);
 		for(Book book : books) {
