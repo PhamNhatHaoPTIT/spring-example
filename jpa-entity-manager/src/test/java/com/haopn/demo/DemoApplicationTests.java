@@ -54,6 +54,7 @@ class DemoApplicationTests {
         initAccount();
         bankAccountService.updateAccount(1, 2233);
         BankAccount temp = bankAccountService.findById(1);
+        System.out.println(temp.getBalance());
         Assert.assertTrue(temp.getBalance() == 2233);
     }
 

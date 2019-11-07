@@ -65,12 +65,14 @@ public class BankAccountDaoImpl implements BankAccountDao {
 
     @Override
     public void updateAccount(int id, double balance) {
+        entityManager.getTransaction().begin();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaUpdate<BankAccount> update = criteriaBuilder.createCriteriaUpdate(BankAccount.class);
         Root root = update.from(BankAccount.class);
         update.set("balance", balance);
         update.where(criteriaBuilder.equal(root.get("id"), id));
         entityManager.createQuery(update).executeUpdate();
+        entityManager.getTransaction().commit();
     }
 
 

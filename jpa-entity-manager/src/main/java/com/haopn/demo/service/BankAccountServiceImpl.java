@@ -56,13 +56,11 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteAccount(int id) {
         bankAccountDao.deleteAccount(id);
     }
 
     @Override
-    @Transactional
     public void updateAccount(int id, double balance) {
         bankAccountDao.updateAccount(id, balance);
     }
