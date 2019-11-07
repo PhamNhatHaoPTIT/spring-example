@@ -5,6 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "book_category")
+@NamedEntityGraph(name = "BookCategory.books", attributeNodes = @NamedAttributeNode("books"))
 public class BookCategory {
 
     @Id

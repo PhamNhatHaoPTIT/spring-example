@@ -36,7 +36,7 @@ public class BookCategoryServiceImpl implements BookCategoryService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<Book> getAllBookLabel(String bookType) {
         BookCategory bookCategory = bookCategoryRepository.findBookCategoryByName(bookType);
         List<Book> books = bookCategory.getBooks();
