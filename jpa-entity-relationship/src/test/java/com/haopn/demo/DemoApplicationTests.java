@@ -78,4 +78,10 @@ class DemoApplicationTests {
 		}
 	}
 
+	@Test
+	public void testCountDistinctQuery() {
+		int count = bookCategoryService.countDistinctBookCategoryByBooksIdLessThan(4);
+		Assert.assertTrue(count == 1);
+	}
+
 }

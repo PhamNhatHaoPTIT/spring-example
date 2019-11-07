@@ -15,4 +15,5 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     void deleteBookById(int id);
 
     List<Book> findAll(Sort sort);
+
 }

@@ -7,4 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BookCategoryRepository extends JpaRepository<BookCategory, Integer> {
     BookCategory findBookCategoryByName(String name);
     BookCategory findBookCategoryByBooksId(int id);
+
+    int countDistinctBookCategoryByBooksIdLessThan(int id);
+
 }

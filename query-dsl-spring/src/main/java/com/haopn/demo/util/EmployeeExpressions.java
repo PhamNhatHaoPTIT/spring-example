@@ -9,7 +9,7 @@ public class EmployeeExpressions {
     public static BooleanExpression hasBirthday() {
         LocalDate today = LocalDate.now();
         return QEmployee.employee.birthday.dayOfYear().eq(today.getDayOfYear()).
-                and(QEmployee.employee.birthday.month().eq(today.getMonthValue()));
+               and(QEmployee.employee.birthday.month().eq(today.getMonthValue()));
     }
 
     public static BooleanExpression isLongTermEmployee() {
