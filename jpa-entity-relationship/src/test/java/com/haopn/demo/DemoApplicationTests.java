@@ -4,9 +4,11 @@ import com.haopn.demo.entity.Book;
 import com.haopn.demo.entity.BookCategory;
 import com.haopn.demo.entity.QBook;
 import com.haopn.demo.entity.QBookCategory;
+import com.haopn.demo.repository.BookCategoryRepository;
 import com.haopn.demo.service.BookCategoryService;
 import com.haopn.demo.service.BookService;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.TupleElement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -42,10 +45,13 @@ class DemoApplicationTests {
 	BookService bookService;
 	@Autowired
 	EntityManager entityManager;
+	@Autowired
+	BookCategoryRepository bookCategoryRepository;
 
 	@PostConstruct
 	public void initData() {
 		BookCategory bookCategory = new BookCategory("IT");
+		BookCategory bookCategory1 = new BookCategory("KT");
 		List<Book> books = new ArrayList<>();
 		Book book_1 = new Book();
 		book_1.setName("Java tutorial");
@@ -59,6 +65,7 @@ class DemoApplicationTests {
 
 		bookCategory.setBooks(books);
 		bookCategoryService.save(bookCategory);
+		bookCategoryService.save(bookCategory1);
 	}
 
 	// verify behavior of @Modifying
@@ -108,12 +115,24 @@ class DemoApplicationTests {
 		JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
 		QBook qBook = QBook.book;
 		QBookCategory qBookCategory = QBookCategory.bookCategory;
+
 		List<Tuple> list = jpaQueryFactory.select(qBookCategory.name, qBook.count().as("count"))
-				.from(qBook)
+				.from(qBookCategory).leftJoin(qBookCategory.books, qBook)
 				.groupBy(qBookCategory.id)
-				.having(qBook.count().goe(2))
+				.having(qBook.count().lt(3)).orderBy(qBook.count().asc())
 				.fetch();
-		Assert.assertTrue(list.size() == 1);
+		Assert.assertTrue(list.size() == 2);
+	}
+
+	@Test
+	public void test_CountBookCategory_By_Book_Use_BooleanEx() {
+		BooleanExpression countBookCategoryWithNumBerBookLessThan = QBookCategory.bookCategory.books.size().lt(4);
+		Iterable<BookCategory> bookCategories = bookCategoryRepository.findAll(countBookCategoryWithNumBerBookLessThan);
+		int size = 0;
+		if(bookCategories instanceof Collection<?>) {
+			size = ((Collection<?>)bookCategories).size();
+		}
+		Assert.assertTrue(size == 2);
 	}
 
 }
