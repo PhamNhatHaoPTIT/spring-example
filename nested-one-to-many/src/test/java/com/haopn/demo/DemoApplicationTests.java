@@ -3,9 +3,6 @@ package com.haopn.demo;
 import com.haopn.demo.bag.BagA;
 import com.haopn.demo.bag.BagB;
 import com.haopn.demo.bag.BagC;
-import com.haopn.demo.entity.A;
-import com.haopn.demo.entity.B;
-import com.haopn.demo.entity.C;
 import com.haopn.demo.service.AService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -19,13 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureJdbc
@@ -45,7 +38,7 @@ class DemoApplicationTests {
 	EntityManager entityManager;
 
 	private List<BagB> getBList(BagA a) {
-		List<BagB> bSet = new ArrayList<>();
+		List<BagB> bList = new ArrayList<>();
 		BagB b1 = new BagB("B1 object");
 		b1.setBagA(a);
 		BagB b2 = new BagB("B2 object");
@@ -67,10 +60,10 @@ class DemoApplicationTests {
 		cList_2.add(c2);
 		b2.setcList(cList_2);
 
-		bSet.add(b1);
-		bSet.add(b2);
-		bSet.add(b3);
-		return bSet;
+		bList.add(b1);
+		bList.add(b2);
+		bList.add(b3);
+		return bList;
 	}
 
 	@Transactional(propagation = Propagation.MANDATORY)

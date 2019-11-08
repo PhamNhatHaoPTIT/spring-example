@@ -12,7 +12,7 @@ public class C {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "b_id")
+    @JoinColumn(name = "b_id", referencedColumnName = "id")
     private B b;
 
     public String getName() {

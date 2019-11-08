@@ -2,7 +2,6 @@ package com.haopn.demo.entity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class B {
@@ -14,7 +13,7 @@ public class B {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "a_id")
+    @JoinColumn(name = "a_id", referencedColumnName = "id")
     private A a;
 
     public B() {

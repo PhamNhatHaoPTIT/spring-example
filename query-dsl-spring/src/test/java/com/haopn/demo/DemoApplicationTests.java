@@ -6,6 +6,9 @@ import com.haopn.demo.repository.EmployeeRepository;
 import com.haopn.demo.util.EmployeeExpressions;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +20,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -38,13 +42,16 @@ class DemoApplicationTests {
 	@Autowired
 	EmployeeRepository employeeRepository;
 
+	@Autowired
+	EntityManager entityManager;
+
 	private List<Employee> createEmployees() {
 		List<Employee> employees = new ArrayList<>();
-		employees.add(new Employee("Hao", "IT", 100, LocalDate.of(1998, Month.NOVEMBER, 7),
+		employees.add(new Employee("AHao", "IT", 100, LocalDate.of(1998, Month.NOVEMBER, 7),
 																		LocalDate.of(2016, Month.AUGUST, 2)));
 		employees.add(new Employee("Hao_1", "IT", 200, LocalDate.of(1998, Month.NOVEMBER, 7),
 																		LocalDate.of(2015, Month.APRIL, 4)));
-		employees.add(new Employee("Hao_2", "IT", 300, LocalDate.of(1997, Month.JANUARY, 1),
+		employees.add(new Employee("BHao_2", "KT", 300, LocalDate.of(1997, Month.JANUARY, 1),
 																		LocalDate.of(2014, Month.DECEMBER, 3)));
 		return employees;
 	}
@@ -82,6 +89,38 @@ class DemoApplicationTests {
 		}
 		// THEN: list.size() == 2
 		Assert.assertTrue(size == 2);
+	}
+
+	// write sub-query using QueryDSL
+	@Test
+	public void test_FindEmployeeHighestSalary() {
+		JPAQueryFactory query = new JPAQueryFactory(entityManager);
+		QEmployee employee = QEmployee.employee;
+		QEmployee e = new QEmployee("e");
+		Employee employee1 = query.selectFrom(employee).where(employee.salary.eq(
+				JPAExpressions.select(e.salary.max()).from(e)
+		)).fetchOne();
+		Assert.assertNotNull(employee1);
+	}
+
+	// write test to verify order query using QueryDSL
+	@Test
+	public void test_OrderEmployee() {
+		JPAQueryFactory query = new JPAQueryFactory(entityManager);
+		QEmployee employee = QEmployee.employee;
+		List<Employee> employees = query.selectFrom(employee).orderBy(employee.salary.desc(), employee.name.asc()).fetch();
+		for(Employee employee1 : employees) {
+			System.out.println(employee1.getName() + ", " + employee1.getSalary());
+		}
+	}
+
+	// write test to demo group by in QueryDSL
+	@Test
+	public void test_GroupEmployee_Depart() {
+		JPAQueryFactory query = new JPAQueryFactory(entityManager);
+		QEmployee employee = QEmployee.employee;
+		List<String> employeeDeparts = query.select(employee.dept).from(employee).groupBy(employee.dept).fetch();
+		Assert.assertTrue(employeeDeparts.size() == 2);
 	}
 
 }

@@ -1,12 +1,10 @@
 package com.haopn.demo.repository;
 
 import com.haopn.demo.entity.A;
-import com.haopn.demo.entity.B;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 @Repository
 public class ARepositoryImpl implements ARepository {
