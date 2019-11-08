@@ -15,19 +15,19 @@ import com.haopn.demo.entity.BankAccount;
 import com.haopn.demo.model.BankAccountInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class BankAccountDaoImpl implements BankAccountDao {
 
-    @Autowired
-    EntityManagerFactory entityManagerFactory;
 
+    @Autowired
     private EntityManager entityManager;
 
-    @PostConstruct
-    public void init() {
-        this.entityManager = entityManagerFactory.createEntityManager();
-    }
+//    @PostConstruct
+//    public void init() {
+//        this.entityManager = entityManagerFactory.createEntityManager();
+//    }
 
     @Override
     public BankAccount findById(Integer id) {
@@ -49,8 +49,9 @@ public class BankAccountDaoImpl implements BankAccountDao {
     }
 
     @Override
+    @Transactional
     public void deleteAccount(int id) {
-        entityManager.getTransaction().begin();
+        //entityManager.getTransaction().begin();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         // create delete
         CriteriaDelete<BankAccount> delete = criteriaBuilder.createCriteriaDelete(BankAccount.class);
@@ -60,7 +61,7 @@ public class BankAccountDaoImpl implements BankAccountDao {
         delete.where(criteriaBuilder.equal(root.get("id"), id));
         // action
         entityManager.createQuery(delete).executeUpdate();
-        entityManager.getTransaction().commit();
+        //entityManager.getTransaction().commit();
     }
 
     @Override
