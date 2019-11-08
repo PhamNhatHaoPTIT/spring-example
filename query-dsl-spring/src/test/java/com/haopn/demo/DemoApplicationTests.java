@@ -87,7 +87,7 @@ class DemoApplicationTests {
 		if(employees instanceof Collection<?>) {
 			size = ((Collection<?>)employees).size();
 		}
-		// THEN: list.size() == 2
+		// THEN: list.size() == 2, total 2 employees
 		Assert.assertTrue(size == 2);
 	}
 

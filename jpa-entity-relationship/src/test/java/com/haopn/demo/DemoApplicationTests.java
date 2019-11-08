@@ -53,11 +53,15 @@ class DemoApplicationTests {
 		bookCategoryService.save(bookCategory);
 	}
 
+	// verify behavior of @Modifying
 	@Test
 	public void testQualifyingAnnotation() {
 		bookService.deleteBookById(1);
 	}
 
+	// two kind to resolve n + 1 problem
+	// 1. use @NamedEntityGraph
+	// 2. use EntityVisitor pattern
 	@Test
 	public void testLoadLazyList() {
 		bookCategoryService.getAllBookLabel("IT");
@@ -89,5 +93,7 @@ class DemoApplicationTests {
 		BookCategory bookCategory = bookCategoryService.findByBooks_Id(1);
 		Assert.assertNotNull(bookCategory);
 	}
+
+	// demo query dsl
 
 }
