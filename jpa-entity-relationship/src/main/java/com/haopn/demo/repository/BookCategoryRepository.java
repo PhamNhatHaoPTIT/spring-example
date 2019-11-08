@@ -11,9 +11,7 @@ public interface BookCategoryRepository extends JpaRepository<BookCategory, Inte
     @EntityGraph(value = "BookCategory.books")
     BookCategory findBookCategoryByName(String name);
     BookCategory findBookCategoryByBooksId(int id);
-
     int countDistinctBookCategoryByBooksIdLessThan(int id);
-
     BookCategory findByBooks_Id(int id);
 
 }

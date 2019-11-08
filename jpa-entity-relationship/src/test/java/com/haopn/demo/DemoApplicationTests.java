@@ -2,8 +2,12 @@ package com.haopn.demo;
 
 import com.haopn.demo.entity.Book;
 import com.haopn.demo.entity.BookCategory;
+import com.haopn.demo.entity.QBook;
+import com.haopn.demo.entity.QBookCategory;
 import com.haopn.demo.service.BookCategoryService;
 import com.haopn.demo.service.BookService;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +20,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.TupleElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +40,8 @@ class DemoApplicationTests {
 	BookCategoryService bookCategoryService;
 	@Autowired
 	BookService bookService;
+	@Autowired
+	EntityManager entityManager;
 
 	@PostConstruct
 	public void initData() {
@@ -95,5 +103,17 @@ class DemoApplicationTests {
 	}
 
 	// demo query dsl
+	@Test
+	public void test_CountBookCategory_By_Book_LessThan() {
+		JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
+		QBook qBook = QBook.book;
+		QBookCategory qBookCategory = QBookCategory.bookCategory;
+		List<Tuple> list = jpaQueryFactory.select(qBookCategory.name, qBook.count().as("count"))
+				.from(qBook)
+				.groupBy(qBookCategory.id)
+				.having(qBook.count().goe(2))
+				.fetch();
+		Assert.assertTrue(list.size() == 1);
+	}
 
 }
