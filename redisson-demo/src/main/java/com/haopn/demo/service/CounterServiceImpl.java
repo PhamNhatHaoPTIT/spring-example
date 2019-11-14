@@ -3,22 +3,23 @@ package com.haopn.demo.service;
 import com.haopn.demo.entity.Count;
 import com.haopn.demo.repository.CountRepository;
 import org.redisson.Redisson;
-import org.redisson.api.RAtomicLong;
-import org.redisson.api.RedissonClient;
+import org.redisson.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @Service
+@EnableScheduling
 public class CounterServiceImpl implements CounterService {
 
     private RedissonClient client;
     private RAtomicLong atomicLong;
+
     @PostConstruct
     public void init() {
         client = Redisson.create();
@@ -45,7 +46,7 @@ public class CounterServiceImpl implements CounterService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.MANDATORY)
     public void persisCounter() {
         Count count = countRepository.findById(1);
         int currentCount = getCounterRedis();
@@ -53,15 +54,10 @@ public class CounterServiceImpl implements CounterService {
     }
 
     @Override
+    @Scheduled(fixedDelay = 3000)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void setSchedule() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                persisCounter();
-                resetCounter();
-            }
-        };
-        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleAtFixedRate(runnable, 0, 3000, TimeUnit.MILLISECONDS);
+        persisCounter();
+        resetCounter();
     }
 }

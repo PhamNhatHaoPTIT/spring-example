@@ -16,7 +16,6 @@ public class DemoApplication {
 
 	@PostConstruct
 	public void startCounterUpdateSchedule() {
-		counterService.resetCounter();
 		counterService.setSchedule();
 	}
 
@@ -28,6 +27,7 @@ public class DemoApplication {
 	public void persis() {
 		if(counterService.getCounterRedis() != 0) {
 			counterService.persisCounter();
+			counterService.resetCounter();
 		}
 	}
 
