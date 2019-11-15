@@ -37,10 +37,10 @@ class DemoApplicationTests {
 
 	@Test
 	public void testLockKey() {
-		RLock lock = client.getFairLock("lock");
-		lock.tryLock();
 		RBucket<String> fooBucket = client.getBucket("foo");
-		fooBucket.set("bar1");
+		RLock lock = client.getLock("lock");
+		lock.lock();
+		fooBucket.set("bar");
 		int x = 1;
 		lock.unlock();
 	}

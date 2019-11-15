@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +16,8 @@ import javax.annotation.PostConstruct;
 @EnableScheduling
 public class CounterServiceImpl implements CounterService {
 
+    @Autowired
+    CountRepository countRepository;
     private RedissonClient client;
     private RAtomicLong atomicLong;
 
@@ -26,38 +27,66 @@ public class CounterServiceImpl implements CounterService {
         atomicLong = client.getAtomicLong("counter");
     }
 
-    @Autowired
-    CountRepository countRepository;
-
     @Override
     public void resetCounter() {
-        atomicLong.set(0);
+        RLock lock = client.getLock("lock");
+        lock.lock();
+        try {
+            atomicLong.set(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public void increaseCounter() {
-        atomicLong.incrementAndGet();
+        RLock lock = client.getLock("lock");
+        lock.lock();
+        try {
+            atomicLong.incrementAndGet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public int getCounterRedis() {
-        int counter = (int) atomicLong.get();
+        int counter = 0;
+        RLock lock = client.getLock("lock");
+        lock.lock();
+        try {
+            counter = (int) atomicLong.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
         return counter;
     }
 
     @Override
-    @Transactional(propagation = Propagation.MANDATORY)
     public void persisCounter() {
         Count count = countRepository.findById(1);
-        int currentCount = getCounterRedis();
-        count.setNumber(count.getNumber() + currentCount);
+        count.setNumber(getCounterRedis() + count.getNumber());
     }
 
     @Override
-    @Scheduled(fixedDelay = 3000)
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Scheduled(fixedDelay = 1000)
+    @Transactional
     public void setSchedule() {
-        persisCounter();
-        resetCounter();
+        RLock lock = client.getLock("lock");
+        lock.lock();
+        try {
+            persisCounter();
+            resetCounter();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
     }
 }

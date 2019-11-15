@@ -1,6 +1,9 @@
 package com.haopn.demo;
 
 import com.haopn.demo.service.CounterService;
+import org.redisson.Redisson;
+import org.redisson.api.RAtomicLong;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,11 +16,6 @@ public class DemoApplication {
 
 	@Autowired
 	CounterService counterService;
-
-	@PostConstruct
-	public void startCounterUpdateSchedule() {
-		counterService.setSchedule();
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
