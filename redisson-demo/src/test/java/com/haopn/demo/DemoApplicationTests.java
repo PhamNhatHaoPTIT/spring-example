@@ -47,7 +47,7 @@ class DemoApplicationTests {
 
 	@Test
 	public void testGetCounter() {
-		int number = counterService.getCounterRedis();
+		long number = counterService.getCounterRedis();
 		System.out.println(number);
 		counterService.increaseCounter();
 	}

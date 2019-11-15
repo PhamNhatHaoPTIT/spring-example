@@ -14,26 +14,23 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 
 @Service
-@EnableScheduling
 public class CounterServiceImpl implements CounterService {
 
     @Autowired
     CountRepository countRepository;
-    private RedissonClient client;
+    @Autowired
+    RedissonClient client;
     private RAtomicLong atomicLong;
 
     @PostConstruct
     public void init() {
         client = Redisson.create();
         atomicLong = client.getAtomicLong("counter");
-        Count count = new Count();
-        count.setNumber(0);
-        countRepository.save(count);
     }
 
     @Override
     public void resetCounter() {
-        atomicLong.set(0);
+        atomicLong.set(0L);
     }
 
     @Override
@@ -42,28 +39,14 @@ public class CounterServiceImpl implements CounterService {
     }
 
     @Override
-    public int getCounterRedis() {
-        return (int) atomicLong.get();
+    public long getCounterRedis() {
+        return atomicLong.get();
     }
 
     @Override
     public void persisCounter() {
-        Count count = countRepository.findById(1);
-        int currentCount = getCounterRedis();
+        Count count = countRepository.findById(1L);
+        long currentCount = getCounterRedis();
         count.setNumber(currentCount + count.getNumber());
-    }
-
-    @Override
-    @Scheduled(fixedDelay = 1000)
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void setSchedule() {
-        RLock lock = client.getLock("lock");
-        lock.lock();
-        try {
-            persisCounter();
-            resetCounter();
-        } finally {
-            lock.unlock();
-        }
     }
 }
