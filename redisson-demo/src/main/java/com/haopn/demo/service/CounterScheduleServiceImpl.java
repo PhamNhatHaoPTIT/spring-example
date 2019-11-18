@@ -16,13 +16,13 @@ public class CounterScheduleServiceImpl implements CounterScheduleService {
     @Autowired
     CounterService counterService;
     @Autowired
-    RedissonClient client;
+    RedissonClient redissonClient;
 
     @Override
     @Scheduled(fixedDelay = 1000)
     @Transactional(propagation = Propagation.REQUIRED)
     public void startCounterSchedule() {
-        RLock lock = client.getLock("lock");
+        RLock lock = redissonClient.getLock("lock");
         lock.lock();
         try {
             counterService.persisCounter();

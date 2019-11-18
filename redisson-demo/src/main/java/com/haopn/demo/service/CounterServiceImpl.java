@@ -14,13 +14,13 @@ public class CounterServiceImpl implements CounterService {
     @Autowired
     CountRepository countRepository;
     @Autowired
-    RedissonClient client;
+    RedissonClient redissonClient;
 
     private RAtomicLong atomicLong;
 
     @PostConstruct
     public void init() {
-        atomicLong = client.getAtomicLong("counter");
+        atomicLong = redissonClient.getAtomicLong("counter");
     }
 
     @Override
