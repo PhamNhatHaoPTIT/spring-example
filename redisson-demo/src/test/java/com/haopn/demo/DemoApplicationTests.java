@@ -21,12 +21,8 @@ class DemoApplicationTests {
 	@Autowired
 	CounterService counterService;
 
-	private RedissonClient client;
-
-	@PostConstruct
-	public void init() {
-		client = Redisson.create();
-	}
+	@Autowired
+	RedissonClient client;
 
 	@Test
 	public
