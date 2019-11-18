@@ -60,4 +60,16 @@ class DemoApplicationTests {
 		// THEN: auto map new name of field sequence
 	}
 
+	@Test
+	public void testChangeValueField() {
+		RBucket<Person> personRBucket = redissonClient.getBucket("person_1");
+		Person person = null;
+		if(personRBucket.isExists()) {
+			person = personRBucket.get();
+			System.out.println(person.toString());
+			person.setAbc("new_abc");                     // make change
+			personRBucket.set(person);                    // apply change
+		}
+	}
+
 }
