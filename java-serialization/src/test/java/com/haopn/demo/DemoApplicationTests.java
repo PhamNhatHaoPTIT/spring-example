@@ -36,7 +36,7 @@ class DemoApplicationTests {
 		employee.setSocialSecurityNumber("12345678");
 		employee.setSupervisor(new Employee());
 	}
-	// total 124 ms
+	// total 113 ms
 	@Test
 	public void persist_Fst() {
 		RBucket<Employee> employeeRBucket = redisClientWithFst.getBucket("fst");
@@ -45,16 +45,7 @@ class DemoApplicationTests {
 		long endTime = System.currentTimeMillis();
 		System.out.println("Total execution time: " + (endTime - startTime) + " ms");
 	}
-	// total 165 ms
-	@Test
-	public void persist_Kryo() {
-		RBucket<Employee> employeeRBucket = redisClientWithKryo.getBucket("kryo");
-		long startTime = System.currentTimeMillis();
-		employeeRBucket.set(employee);
-		long endTime = System.currentTimeMillis();
-		System.out.println("Total execution time: " + (endTime - startTime) + " ms");
-	}
-	// total 199 ms
+	// total 130 ms
 	@Test
 	public void persist_JsonJackson() {
 		RBucket<Employee> employeeRBucket = redisClientWithJsonJackson.getBucket("json");
@@ -63,8 +54,16 @@ class DemoApplicationTests {
 		long endTime = System.currentTimeMillis();
 		System.out.println("Total execution time: " + (endTime - startTime) + " ms");
 	}
+	// total 171 ms
+	@Test
+	public void persist_Kryo() {
+		RBucket<Employee> employeeRBucket = redisClientWithKryo.getBucket("kryo");
+		long startTime = System.currentTimeMillis();
+		employeeRBucket.set(employee);
+		long endTime = System.currentTimeMillis();
+		System.out.println("Total execution time: " + (endTime - startTime) + " ms");
+	}
 
-	// total 136 ms
 	@Test
 	public void deserialization_Fst() {
 		RBucket<Employee> employeeRBucket = redisClientWithFst.getBucket("fst");
@@ -73,19 +72,17 @@ class DemoApplicationTests {
 		long endTime = System.currentTimeMillis();
 		System.out.println("Total execution time: " + (endTime - startTime) + " ms");
 	}
-	// total 162 ms
 	@Test
-	public void deserialization_Kryo() {
-		RBucket<Employee> employeeRBucket = redisClientWithKryo.getBucket("kryo");
+	public void deserialization_JsonJackson() {
+		RBucket<Employee> employeeRBucket = redisClientWithJsonJackson.getBucket("json");
 		long startTime = System.currentTimeMillis();
 		System.out.println(employeeRBucket.get().toString());
 		long endTime = System.currentTimeMillis();
 		System.out.println("Total execution time: " + (endTime - startTime) + " ms");
 	}
-	// total 119 ms
 	@Test
-	public void deserialization_JsonJackson() {
-		RBucket<Employee> employeeRBucket = redisClientWithJsonJackson.getBucket("json");
+	public void deserialization_Kryo() {
+		RBucket<Employee> employeeRBucket = redisClientWithKryo.getBucket("kryo");
 		long startTime = System.currentTimeMillis();
 		System.out.println(employeeRBucket.get().toString());
 		long endTime = System.currentTimeMillis();
