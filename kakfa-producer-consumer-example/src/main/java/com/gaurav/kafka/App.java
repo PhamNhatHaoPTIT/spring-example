@@ -12,8 +12,8 @@ import com.gaurav.kafka.producer.ProducerCreator;
 
 public class App {
 	public static void main(String[] args) {
-//		runProducer();
-		runConsumer();
+		runProducer();
+//		runConsumer();
 	}
 
 	static void runConsumer() {
@@ -28,13 +28,18 @@ public class App {
 				else
 					continue;
 			}
-			//print each record.
+			// print each record
 			consumerRecords.forEach(record -> {
 				System.out.println("Record Key " + record.key());
 				System.out.println("Record value " + record.value());
 				System.out.println("Record partition " + record.partition());
 				System.out.println("Record offset " + record.offset());
 			});
+			// commit offsets returned on the last for the subscribed list of topics and partitions
+			/*
+			* The committed offset should always be the offset of the next message that your application will read.
+			* Thus, when calling commitSync(offsets) you should add one to the offset of the last message processed.
+			* */
 			consumer.commitAsync();
 		}
 		consumer.close();
