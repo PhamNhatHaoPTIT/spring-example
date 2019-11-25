@@ -17,6 +17,9 @@
 .recommenders
 .settings
 .springBeans
+.mvn
+mvnw
+mvnw.cmd
 /build
 /code
 MANIFEST.MF
@@ -32,6 +35,7 @@ lib/
 manifest.yml
 overridedb.*
 target
+classes
 transaction-logs
 .flattened-pom.xml
 secrets.yml
