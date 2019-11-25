@@ -1,5 +1,6 @@
-package com.haopn.demo.engine;
+package com.haopn.demo.service;
 
+import com.haopn.demo.model.Greeting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class Producer {
     @Autowired
     KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendMessage(Object message) {
-        logger.info(String.format("#### -> Producing message -> %s", message));
+    public void sendGreeting(Greeting message) {
+        logger.info(String.format("#### -> Producing greeting message -> %s", message));
         this.kafkaTemplate.send(TOPIC, message);
     }
 
