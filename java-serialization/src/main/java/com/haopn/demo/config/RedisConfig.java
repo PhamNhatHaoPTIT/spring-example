@@ -5,6 +5,7 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.codec.FstCodec;
 import org.redisson.codec.JsonJacksonCodec;
+import org.redisson.codec.KryoCodec;
 import org.redisson.config.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +35,7 @@ public class RedisConfig {
         List<Class<?>> classes = new ArrayList<>();
         classes.add(Employee.class);
         classes.add(java.util.Date.class);
-        ExtendKryoCodec kryoCodec = new ExtendKryoCodec(classes);
+        KryoCodec kryoCodec = new KryoCodec(new MyKryoPoolImpl(classes, null));
         config.setCodec(kryoCodec);
         return Redisson.create(config);
     }
