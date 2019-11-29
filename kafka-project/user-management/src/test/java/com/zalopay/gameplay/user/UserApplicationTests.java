@@ -48,7 +48,7 @@ class UserApplicationTests {
 
 	@Test
 	public void saveUserGame() {
-		userGameService.saveUserGamePlay("nhanbv", "123Play", 0);
+		userGameService.saveUserGamePlay("nhanbv", "456Game", 0);
 	}
 
 	@Test

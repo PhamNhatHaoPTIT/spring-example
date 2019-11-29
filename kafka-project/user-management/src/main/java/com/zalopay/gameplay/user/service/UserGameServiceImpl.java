@@ -36,8 +36,13 @@ public class UserGameServiceImpl implements UserGameService {
             user.setName(utilService.findById(r.nextInt(9) + 1).getName());
             userService.save(user);
         }
-
+        // new game, persis new game and process game
         Game game = gameService.findGameByName(gameType);
+        if(game == null) {
+            game = new Game();
+            game.setName(gameType);
+            gameService.save(game);
+        }
         // determine turn ?
         int turn = countTotalUserGame(user, game) + 1;
         // set info
