@@ -9,4 +9,5 @@ import java.util.List;
 public interface UserGameService {
     public void saveUserGamePlay(String username, String gameType, int result);
     List<UserGame> findByUserAndGame(User user, Game game);
+    int countTotalUserGame(User user, Game game);
 }

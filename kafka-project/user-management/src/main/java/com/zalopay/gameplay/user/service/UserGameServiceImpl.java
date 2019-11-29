@@ -39,8 +39,7 @@ public class UserGameServiceImpl implements UserGameService {
 
         Game game = gameService.findGameByName(gameType);
         // determine turn ?
-        List<UserGame> totalGamePlay = findByUserAndGame(user, game);
-        int turn = totalGamePlay.size() + 1;
+        int turn = countTotalUserGame(user, game) + 1;
         // set info
         UserGameId id = new UserGameId(user.getId(), game.getId(), turn);
 
@@ -53,5 +52,10 @@ public class UserGameServiceImpl implements UserGameService {
     @Override
     public List<UserGame> findByUserAndGame(User user, Game game) {
         return userGameRepository.findByUserAndGame(user, game);
+    }
+
+    @Override
+    public int countTotalUserGame(User user, Game game) {
+        return userGameRepository.countByUserAndGame(user, game);
     }
 }

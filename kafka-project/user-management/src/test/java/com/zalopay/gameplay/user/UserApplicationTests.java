@@ -52,12 +52,11 @@ class UserApplicationTests {
 	}
 
 	@Test
-	@Transactional
-	public void findUserGame() {
+	public void countTotalUserGame() {
 		User user = userService.findUserByUsername("haopn");
-		Game game = gameService.findGameByName("abc");
-		List<UserGame> games = userGameService.findByUserAndGame(user, game);
-		System.out.println(games.size());
+		Game game = gameService.findGameByName("123Play");
+		int sum = userGameService.countTotalUserGame(user, game);
+		System.out.println(sum);
 	}
 
 	@Test

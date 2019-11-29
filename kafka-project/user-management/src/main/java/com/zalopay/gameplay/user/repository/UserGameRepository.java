@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface UserGameRepository extends JpaRepository<UserGame, UserGameId> {
     List<UserGame> findByUserAndGame(User user, Game game);
+    int countByUserAndGame(User user, Game game);
 }
